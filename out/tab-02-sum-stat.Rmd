@@ -1,0 +1,28 @@
+
+---
+editor_options:
+  chunk_output_type: console
+output:
+  word_document: default
+---
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, results='hide'}
+library(tidyverse)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE, 
+                      fig.width = 6, fig.asp = 0.618, dpi= 600, cache = FALSE) #, dev = "cairo_pdf"
+```
+
+```{r sum_tab, results='asis', cache=FALSE}
+# sum stat table ----------------------------------------------------------
+
+haven::read_dta(here::here("out/tab-02-sum-stat.dta")) %>% 
+  rename(` ` = type, 
+         "Selected\nTreated\nStates\n(All Years)" = value,
+         "Selected\nTreated\nStates\n(Pre)" = pre,
+         "Selected\nTreated\nStates\n(Post)" = post,
+         "Never\nTreated\nStates\n(All Years)" = value2) %>%   
+  as.data.frame() %>% 
+  pander::pandoc.table(caption = "Table 2: Descriptive Statistics (Weighted Means)",
+                       keep.line.breaks = TRUE,
+                       justify = "lcccc")
+```

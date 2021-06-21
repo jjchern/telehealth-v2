@@ -1,0 +1,60 @@
+
+---
+editor_options:
+  chunk_output_type: console
+output:
+  word_document: default
+---
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, results='hide'}
+library(tidyverse)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE, 
+                      fig.width = 6, fig.asp = 0.618, dpi= 600, cache = FALSE) #, dev = "cairo_pdf"
+```
+
+```{r treat_tab, results='asis'}
+# treated states table ----------------------------------------------------------
+
+haven::read_dta(here::here("dta/01_policy_date.dta")) %>% 
+  filter(type == "private_parity_law") %>% 
+  filter(year >= 1999 + 4 & year <= 2016 - 2) %>% 
+  select(usps, year) %>% 
+  transmute(treated_states = paste0(usps, " (", year, ")")) %>% 
+  pull(1) %>% # length() # 14 Treated States: Limited pre-periods
+  paste0(collapse = ", ") -> row1
+
+haven::read_dta(here::here("dta/01_policy_date.dta")) %>% 
+  filter(type == "private_parity_law") %>% 
+  filter(year < 1999 + 4) %>% 
+  select(usps, year) %>% 
+  transmute(treated_states = paste0(usps, " (", year, ")")) %>% 
+  pull(1) %>% # length() # 6 Treated States: Limited pre-periods
+  paste0(collapse = ", ") -> row2
+
+haven::read_dta(here::here("dta/01_policy_date.dta")) %>% 
+  filter(type == "private_parity_law") %>% 
+  filter(year %in% 2015:2016) %>% 
+  select(usps, year) %>% 
+  transmute(treated_states = paste0(usps, " (", year, ")")) %>% 
+  pull(1) %>% # length() # 10 Treated States: Limited post-periods
+  paste0(collapse = ", ") -> row3
+
+haven::read_dta(here::here("dta/01_policy_date.dta")) %>% 
+  filter(type == "private_parity_law") %>% 
+  filter(is.na(year) | year >= 2017) %>% 
+  mutate(usps = if_else(!is.na(year), paste0(usps, " (", year, ")"), usps)) %>% 
+  pull(usps) %>% # length() # 16 Never Treated States
+  paste0(collapse = ", ") -> row4
+
+tibble(
+  `Treatment Status` = c("Selected Fourteen Treated States", 
+                         "Six Treated States with Limited Pre-Period", 
+                         "Ten  Treated States with Limited Post-Period", 
+                         "Twenty-One Never Treated States"),
+  `States` = c(row1, row2, row3, row4)
+) %>% 
+  as.data.frame() %>% 
+  pander::pandoc.table(caption = "Table 1: Categorization of Treated States",
+                       keep.line.breaks = TRUE,
+                       justify = "ll")
+```

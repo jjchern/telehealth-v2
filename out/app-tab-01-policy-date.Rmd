@@ -1,0 +1,34 @@
+
+---
+editor_options:
+  chunk_output_type: console
+output:
+  word_document: default
+---
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, results='hide'}
+library(tidyverse)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE, 
+                      fig.width = 6, fig.asp = 0.618, dpi= 600, cache = FALSE) #, dev = "cairo_pdf"
+```
+
+```{r tab_date, results="asis"}
+
+# Tabulate effective dates by states --------------------------------------
+
+here::here("dta/01_policy_date.dta") %>% 
+  haven::read_dta() %>% 
+  select(state, type, date) %>% 
+  mutate(date = as.character(date)) %>%
+  mutate(date = if_else(is.na(date), NA_character_, substr(date, 1, 7))) %>% 
+  mutate(date = if_else(is.na(date), " ", date)) %>% 
+  spread(type, date) %>% 
+  select(state, private_parity_law, medicaid_parity_law) %>% 
+  rename("State" = state,
+         "Private Parity Law\nEffective Date" = private_parity_law,
+         "Medicaid Parity Law\nEffective Date" = medicaid_parity_law) %>% 
+  as.data.frame() %>% 
+  pander::pandoc.table(caption = "Appendix Table 1: Timelines of State Private Parity Law and Medicaid Parity Law",
+               keep.line.breaks = TRUE,
+               justify = "lll")
+```

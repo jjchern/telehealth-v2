@@ -1,0 +1,13 @@
+V1,V2,V3
+GR113-000,all causes,all_causes
+GR113-028,malignant melanoma of skin (c43),skin_cancer
+GR113-046,#diabetes mellitus (e10-e14),diabetes_mellitus
+GR113-054,"#diseases of heart (i00-i09,i11,i13,i20-i51)",disease_of_heart
+GR113-058,ischemic heart diseases (i20-i25),ischemic_heart_disease
+GR113-070,#cerebrovascular diseases (i60-i69),cerebrovascular_diseases
+GR113-076,#influenza and pneumonia (j09-j18),influenza_and_pneumonia
+GR113-112,"#accidents (unintentional injuries) (v01-x59,y85-y86)",accidents
+GR113-113,"transport accidents (v01-v99,y85)",transport_acc
+GR113-117,"nontransport accidents (w00-x59,y86)",non-trans_acc
+GR113-124,"#intentional self-harm (suicide) (*u03,x60-x84,y87.0)",suicide
+GR113-127,"#assault (homicide) (*u01-*u02,x85-y09,y87.1)",assualt

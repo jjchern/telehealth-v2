@@ -1,0 +1,250 @@
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' County-Level, Part 1: 1999:2008
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Start at line 2 to skip the header in the file: SET !LOOP 2
+'Increase the current position in the file with each loop: SET !DATASOURCE_LINE {{!LOOP}}
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+
+SET EndYear 2008
+SET !TIMEOUT_PAGE 900
+SET !DATASOURCE "/Volumes/Drive/Github/jjchern/telehealth/dta/03-icd10-113-cause-list.csv"
+SET !LOOP 2
+SET !DATASOURCE_LINE {{!LOOP}}
+SET !ERRORIGNORE YES
+
+VERSION BUILD=9030808 RECORDER=FX
+TAB T=1
+URL GOTO=https://wonder.cdc.gov/ucd-icd10.html
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-I<SP>Agree
+
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_1 CONTENT=%D76.V9-level2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_2 CONTENT=%D76.V1-level1
+
+'Include age adjusted rate and percent of total dealth
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_aar_enable CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CM_9 CONTENT=YES
+
+'Add title
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:wonderform ATTR=ID:TO_title CONTENT={{!COL1}}.<SP>Mortality<SP>rates<SP>of<SP>{{!COL2}}<SP>by<SP>county,<SP>1999-{{EndYear}}
+
+'Select year
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:codes-D76.V1 CONTENT=%1999:%2000:%2001:%2002:%2003:%2004:%2005:%2006:%2007:%2008
+
+'Select 113 cause list
+TAG POS=1 TYPE=INPUT:RADIO FORM=ID:wonderform ATTR=ID:RO_ucdD76.V4
+
+'Choose specific cause
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SD76.V4 CONTENT=%{{!COL1}}
+
+'Save
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_precision CONTENT=%2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_timeout CONTENT=%900
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_zeros CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_suppressed CONTENT=YES
+TAG POS=9 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Send
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Export
+SAVEAS TYPE=CPL FOLDER="/Volumes/Drive/Github/jjchern/telehealth/raw" FILE="{{!COL1}}. Motality rates of {{!COL2}} by county, 1999-2008"
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' County-Level, Part 2: 2009:2016
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Start at line 2 to skip the header in the file: SET !LOOP 2
+'Increase the current position in the file with each loop: SET !DATASOURCE_LINE {{!LOOP}}
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+
+SET EndYear 2016
+SET !TIMEOUT_PAGE 900
+SET !DATASOURCE "/Volumes/Drive/Github/jjchern/telehealth/dta/03-icd10-113-cause-list.csv"
+SET !LOOP 2
+SET !DATASOURCE_LINE {{!LOOP}}
+SET !ERRORIGNORE YES
+
+VERSION BUILD=9030808 RECORDER=FX
+TAB T=1
+URL GOTO=https://wonder.cdc.gov/ucd-icd10.html
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-I<SP>Agree
+
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_1 CONTENT=%D76.V9-level2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_2 CONTENT=%D76.V1-level1
+
+'Include age adjusted rate and percent of total dealth
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_aar_enable CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CM_9 CONTENT=YES
+
+'Add title
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:wonderform ATTR=ID:TO_title CONTENT={{!COL1}}.<SP>Mortality<SP>rates<SP>of<SP>{{!COL2}}<SP>by<SP>county,<SP>2009-{{EndYear}}
+
+'Select year
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:codes-D76.V1 CONTENT=%2009:%2010:%2011:%2012:%2013:%2014:%2015:%2016
+
+'Select 113 cause list
+TAG POS=1 TYPE=INPUT:RADIO FORM=ID:wonderform ATTR=ID:RO_ucdD76.V4
+
+'Choose specific cause
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SD76.V4 CONTENT=%{{!COL1}}
+
+'Save
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_precision CONTENT=%2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_timeout CONTENT=%900
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_zeros CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_suppressed CONTENT=YES
+TAG POS=9 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Send
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Export
+SAVEAS TYPE=CPL FOLDER="/Volumes/Drive/Github/jjchern/telehealth/raw" FILE="{{!COL1}}. Motality rates of {{!COL2}} by county, 2009-2016"
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' State-by-2013-UR Level, 1999:2016
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Start at line 2 to skip the header in the file: SET !LOOP 2
+'Increase the current position in the file with each loop: SET !DATASOURCE_LINE {{!LOOP}}
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+'%D76.V19: 2013 UR codes
+
+SET EndYear 2016
+SET !TIMEOUT_PAGE 900
+SET !DATASOURCE "/Volumes/Drive/Github/jjchern/telehealth/dta/03-icd10-113-cause-list.csv"
+SET !LOOP 2
+SET !DATASOURCE_LINE {{!LOOP}}
+SET !ERRORIGNORE YES
+
+VERSION BUILD=9030808 RECORDER=FX
+TAB T=1
+URL GOTO=https://wonder.cdc.gov/ucd-icd10.html
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-I<SP>Agree
+
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_1 CONTENT=%D76.V9-level1
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_2 CONTENT=%D76.V19
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_3 CONTENT=%D76.V1-level1
+
+'Include age adjusted rate and percent of total dealth
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_aar_enable CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CM_9 CONTENT=YES
+
+'Add title
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:wonderform ATTR=ID:TO_title CONTENT={{!COL1}}.<SP>Mortality<SP>rates<SP>of<SP>{{!COL2}}<SP>by<SP>state<SP>and<SP>2013<SP>UR<SP>codes,<SP>1999-{{EndYear}}
+
+'Select year
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:codes-D76.V1 CONTENT=%1999:%2000:%2001:%2002:%2003:%2004:%2005:%2006:%2007:%2008:%2009:%2010:%2011:%2012:%2013:%2014:%2015:%2016
+
+'Select 113 cause list
+TAG POS=1 TYPE=INPUT:RADIO FORM=ID:wonderform ATTR=ID:RO_ucdD76.V4
+
+'Choose specific cause
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SD76.V4 CONTENT=%{{!COL1}}
+
+'Save
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_precision CONTENT=%2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_timeout CONTENT=%900
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_zeros CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_suppressed CONTENT=YES
+TAG POS=9 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Send
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Export
+SAVEAS TYPE=CPL FOLDER="/Volumes/Drive/Github/jjchern/cdc-mortality-data/02-raw-state-13ur-year-1999-2016" FILE="{{!COL1}}. Motality rates of {{!COL2}} by state and 2013 UR codes, 1999-2016"
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' State-by-2006-UR Level, 1999:2016
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Start at line 2 to skip the header in the file: SET !LOOP 2
+'Increase the current position in the file with each loop: SET !DATASOURCE_LINE {{!LOOP}}
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+'%D76.V11: 2006 UR codes
+
+SET EndYear 2016
+SET !TIMEOUT_PAGE 900
+SET !DATASOURCE "/Volumes/Drive/Github/jjchern/telehealth/dta/03-icd10-113-cause-list.csv"
+SET !LOOP 2
+SET !DATASOURCE_LINE {{!LOOP}}
+SET !ERRORIGNORE YES
+
+VERSION BUILD=9030808 RECORDER=FX
+TAB T=1
+URL GOTO=https://wonder.cdc.gov/ucd-icd10.html
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-I<SP>Agree
+
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_1 CONTENT=%D76.V9-level1
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_2 CONTENT=%D76.V11
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_3 CONTENT=%D76.V1-level1
+
+'Include age adjusted rate and percent of total dealth
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_aar_enable CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CM_9 CONTENT=YES
+
+'Add title
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:wonderform ATTR=ID:TO_title CONTENT={{!COL1}}.<SP>Mortality<SP>rates<SP>of<SP>{{!COL2}}<SP>by<SP>state<SP>and<SP>2006<SP>UR<SP>codes,<SP>1999-{{EndYear}}
+
+'Select year
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:codes-D76.V1 CONTENT=%1999:%2000:%2001:%2002:%2003:%2004:%2005:%2006:%2007:%2008:%2009:%2010:%2011:%2012:%2013:%2014:%2015:%2016
+
+'Select 113 cause list
+TAG POS=1 TYPE=INPUT:RADIO FORM=ID:wonderform ATTR=ID:RO_ucdD76.V4
+
+'Choose specific cause
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SD76.V4 CONTENT=%{{!COL1}}
+
+'Save
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_precision CONTENT=%2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_timeout CONTENT=%900
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_zeros CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_suppressed CONTENT=YES
+TAG POS=9 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Send
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Export
+SAVEAS TYPE=CPL FOLDER="Set a default folder in Firefox" FILE="{{!COL1}}. Motality rates of {{!COL2}} by state and 2006 UR codes, 1999-2016"
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' State Level, 1999:2016
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'Start at line 2 to skip the header in the file: SET !LOOP 2
+'Increase the current position in the file with each loop: SET !DATASOURCE_LINE {{!LOOP}}
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+'%D76.V11: 2006 UR codes
+
+SET EndYear 2016
+SET !TIMEOUT_PAGE 900
+SET !DATASOURCE "/Volumes/Drive/Github/jjchern/telehealth/dta/03-icd10-113-cause-list.csv"
+SET !LOOP 2
+SET !DATASOURCE_LINE {{!LOOP}}
+SET !ERRORIGNORE YES
+
+VERSION BUILD=9030808 RECORDER=FX
+TAB T=1
+URL GOTO=https://wonder.cdc.gov/ucd-icd10.html
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-I<SP>Agree
+
+'Select county and year (use state to test: D76.V9-level1; level2 is county)
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_1 CONTENT=%D76.V9-level1
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SB_2 CONTENT=%D76.V1-level1
+
+'Include age adjusted rate and percent of total dealth
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_aar_enable CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CM_9 CONTENT=YES
+
+'Add title
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:wonderform ATTR=ID:TO_title CONTENT={{!COL1}}.<SP>Mortality<SP>rates<SP>of<SP>{{!COL2}}<SP>by<SP>state,<SP>1999-{{EndYear}}
+
+'Select year
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:codes-D76.V1 CONTENT=%1999:%2000:%2001:%2002:%2003:%2004:%2005:%2006:%2007:%2008:%2009:%2010:%2011:%2012:%2013:%2014:%2015:%2016
+
+'Select 113 cause list
+TAG POS=1 TYPE=INPUT:RADIO FORM=ID:wonderform ATTR=ID:RO_ucdD76.V4
+
+'Choose specific cause
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SD76.V4 CONTENT=%{{!COL1}}
+
+'Save
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_precision CONTENT=%2
+TAG POS=1 TYPE=SELECT FORM=ID:wonderform ATTR=ID:SO_timeout CONTENT=%900
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_zeros CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:wonderform ATTR=ID:CO_show_suppressed CONTENT=YES
+TAG POS=9 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Send
+TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:wonderform ATTR=NAME:action-Export
+SAVEAS TYPE=CPL FOLDER="Set a default folder in Firefox" FILE="{{!COL1}}. Motality rates of {{!COL2}} by state, 1999-2016"
