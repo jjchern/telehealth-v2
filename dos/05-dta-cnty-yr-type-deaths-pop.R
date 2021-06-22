@@ -49,7 +49,27 @@ raw_part1 %>%
   arrange(county_code, year, type) %>% 
   print(n = 13) -> deaths_pop
 
-haven::write_dta(deaths_pop, "dta/05-deaths-pop-county.dta")
+# Add deaths_r with random numbers for missing values ---------------------
+
+deaths_pop %>% 
+  filter(is.na(deaths)) %>% 
+  nrow() %>% print() -> n_missing
+
+as.numeric(sample(0L:9L, n_missing, replace = TRUE)) %>% 
+  print() -> missing_vec
+
+deaths_pop %>% 
+  filter(is.na(deaths)) %>% 
+  print() -> missing_df
+
+bind_cols(missing_df, tibble(deaths_r = missing_vec)) %>% 
+  print() -> missing_df2
+
+full_join(deaths_pop, missing_df2) %>% 
+  mutate(deaths_r = if_else(is.na(deaths), deaths_r, deaths)) %>% 
+  print() -> deaths_pop2
+
+haven::write_dta(deaths_pop2, "dta/05-deaths-pop-county.dta")
 
 # Add under-65 deaths -----------------------------------------------------
 

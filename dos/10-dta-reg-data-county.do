@@ -1,7 +1,8 @@
 
 * 10-dta-reg-data-county.R
 
-glo projroot "/Volumes/Drive/Github/jjchern/telehealth-v2"
+* Change project root:
+glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
 
 clear
 set more off
@@ -45,7 +46,9 @@ foreach out in dr_all_causes dr_cerebrovascular_diseases dr_diabetes_mellitus //
 				dr_accidents dr_transport_acc dr_non_trans_acc dr_assualt ///
 				dr_all_causes_u65 dr_cvd_u65 dr_diabetes_mellitus_u65 ///
 				dr_i_and_p_u65 dr_ischemic_heart_disease_u65 dr_suicide_u65 ///
-				dr_combined_u65 {
+				dr_combined_u65 ///
+				r_dr_all_causes r_dr_cerebrovascular_diseases r_dr_diabetes_mellitus ///
+				r_dr_influenza_and_pneumonia r_dr_ischemic_heart_disease r_dr_suicide {
 	gen ln_`out' = ln(`out')
 }
 
@@ -68,6 +71,13 @@ la var ln_dr_i_and_p_u65 "I&P"
 la var ln_dr_ischemic_heart_disease_u65 "IHD" 
 la var ln_dr_suicide_u65 "Suicide"
 la var ln_dr_combined_u65 "Combined"
+
+la var ln_r_dr_all_causes "All Causes" 
+la var ln_r_dr_cerebrovascular_diseases "CVD"
+la var ln_r_dr_diabetes_mellitus "DM"
+la var ln_r_dr_influenza_and_pneumonia "I&P"
+la var ln_r_dr_ischemic_heart_disease "IHD"
+la var ln_r_dr_suicide "Suicide"
 
 gen s3_es_year_l3p = (year - policy_year_private_parity_law + 1 <= -3)
 foreach y in -2 -1 0 1 2 {
