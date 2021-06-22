@@ -31,7 +31,7 @@ foreach out in r_dr_all_causes r_dr_cerebrovascular_diseases r_dr_diabetes_melli
 		
 esttab, b(3) se(3) keep(treat_post) label star(** 0.05) varwidth(32) ///
 	   s(bl_mean bl_mean_lvl n_units N, fmt(2 2 0 %9.0fc) l("Mean of DV (Pre-Event)" "Mean of DV (Pre-Event) in Level" "Number of States" "Number of Observations")) ti("1. WLS, s3")
-esttab using "out/tab-06-r-dr.rtf", replace b(3) se(3) keep(treat_post) label star(** 0.05) varwidth(32) ///
+esttab using "out/app-tab-06-r-dr.rtf", replace b(3) se(3) keep(treat_post) label star(** 0.05) varwidth(32) ///
 	   s(bl_mean bl_mean_lvl n_units N, fmt(2 2 0 %9.0fc) l("Mean of DV (Pre-Event)" "Mean of DV (Pre-Event) in Level" "Number of States" "Number of Observations")) ti("1. WLS, s3")
 
 * Panel B
@@ -51,7 +51,7 @@ foreach out in r_dr_all_causes r_dr_cerebrovascular_diseases r_dr_diabetes_melli
 		
 esttab, b(3) se(3) keep(treat_post) label star(** 0.05) varwidth(32) ///
 	   s(bl_mean bl_mean_lvl n_units N, fmt(2 2 0 %9.0fc) l("Mean of DV (Pre-Event)" "Mean of DV (Pre-Event) in Level" "Number of States" "Number of Observations")) ti("1. WLS, s3")
-esttab using "out/tab-06-r-dr.rtf", append b(3) se(3) keep(treat_post) label star(** 0.05) varwidth(32) ///
+esttab using "out/app-tab-06-r-dr.rtf", append b(3) se(3) keep(treat_post) label star(** 0.05) varwidth(32) ///
 	   s(bl_mean bl_mean_lvl n_units N, fmt(2 2 0 %9.0fc) l("Mean of DV (Pre-Event)" "Mean of DV (Pre-Event) in Level" "Number of States" "Number of Observations")) ti("1. WLS, s3")
 
 	   
