@@ -1,7 +1,8 @@
 
 * app-tab-04-state-policies.do
 
-glo projroot "/Volumes/Drive/Github/jjchern/telehealth-v2"
+* Change project root:
+glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
 
 clear
 set more off
