@@ -51,6 +51,8 @@ raw_part1 %>%
 
 # Add deaths_r with random numbers for missing values ---------------------
 
+set.seed(222)
+
 deaths_pop %>% 
   filter(is.na(deaths)) %>% 
   nrow() %>% print() -> n_missing
