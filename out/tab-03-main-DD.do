@@ -2,7 +2,7 @@
 * tab-03-main-DD.do
 
 * Change project root:
-glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
+glo projroot "/Users/ioi/Documents/telehealth-v2"
 
 clear
 set more off
