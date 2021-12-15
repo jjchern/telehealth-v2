@@ -1,7 +1,7 @@
 
 * tab-04-under65.do
 
-* Change project root:
+* Change project root: 
 glo projroot "/Users/ioi/Documents/telehealth-v2"
 
 clear
