@@ -2,7 +2,7 @@
 * 10-dta-reg-data-county.R
 
 * Change project root:
-glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
+glo projroot "/Users/ioi/Documents/telehealth-v2"
 
 clear
 set more off
@@ -14,6 +14,11 @@ u "dta/09_analysis_data_county.dta" if !inlist(usps, "CA", "LA", "OK", "TX", "HI
 
 * Add under65
 merge 1:1 usps county_code year using "dta/07_cnty_yr_death_rate_under_65.dta"
+keep if _m == 3
+drop _m
+
+* Add age3564
+merge 1:1 usps county_code year using "dta/07_cnty_yr_death_rate_age3564.dta"
 keep if _m == 3
 drop _m
 
@@ -41,12 +46,19 @@ gen treat_post = treat * post
 ren dr_cerebrovascular_diseases_u65 dr_cvd_u65
 ren dr_influenza_and_pneumonia_u65 dr_i_and_p_u65
 
+ren dr_cerebrovascular_diseases_3564 dr_cvd_3564
+ren dr_influenza_and_pneumonia_3564 dr_i_and_p_3564
+ren dr_ischemic_heart_disease_3564 dr_ihd_3564
+
 foreach out in dr_all_causes dr_cerebrovascular_diseases dr_diabetes_mellitus ///
 				dr_influenza_and_pneumonia dr_ischemic_heart_disease dr_suicide ///
 				dr_accidents dr_transport_acc dr_non_trans_acc dr_assualt ///
 				dr_all_causes_u65 dr_cvd_u65 dr_diabetes_mellitus_u65 ///
 				dr_i_and_p_u65 dr_ischemic_heart_disease_u65 dr_suicide_u65 ///
 				dr_combined_u65 ///
+				dr_all_causes_3564 dr_cvd_3564 dr_diabetes_mellitus_3564 ///
+				dr_i_and_p_3564 dr_ihd_3564 dr_suicide_3564 ///
+				dr_combined_3564 ///
 				r_dr_all_causes r_dr_cerebrovascular_diseases r_dr_diabetes_mellitus ///
 				r_dr_influenza_and_pneumonia r_dr_ischemic_heart_disease r_dr_suicide {
 	gen ln_`out' = ln(`out')

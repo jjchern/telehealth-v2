@@ -143,6 +143,76 @@ under_65_raw_part1 %>%
 
 haven::write_dta(under_65_deaths_pop, "dta/05-deaths-pop-county-under-65.dta")
 
+# Add 35-64 deaths -----------------------------------------------------
+
+# Walk before run
+# read_tsv("raw/county_part1/Age3564 GR113-000. Mortality rates of all causes by county, 1999-2008.txt") %>%
+#   filter(!is.na(County)) %>%
+#   mutate(Type = "all_causes") %>%
+#   mutate(Deaths = as.numeric(Deaths)) %>%
+#   mutate(Population = as.numeric(Population)) %>%
+#   mutate(`Crude Rate` = as.character(`Crude Rate`)) %>%
+#   print() -> age3564_raw_part1
+# 
+# read_tsv("raw/county_part2/Age3564 GR113-000. Mortality rates of all causes by county, 2009-2016.txt") %>%
+#   filter(!is.na(County)) %>%
+#   mutate(Type = "all_causes") %>%
+#   mutate(Deaths = as.numeric(Deaths)) %>%
+#   mutate(Population = as.numeric(Population)) %>%
+#   mutate(`Crude Rate` = as.character(`Crude Rate`)) %>%
+#   print() -> age3564_raw_part1
+
+#  "GR113-000" "GR113-046"         "GR113-058"              "GR113-070"                "GR113-076"               "GR113-124" 
+# "all_causes" "diabetes_mellitus" "ischemic_heart_disease" "cerebrovascular_diseases" "influenza_and_pneumonia"  "suicide" 
+
+map2_dfr(
+  .x = c("Age3564 GR113-000", "Age3564 GR113-046", "Age3564 GR113-058", "Age3564 GR113-070", "Age3564 GR113-076", "Age3564 GR113-124", "Age3564 Mortality"),
+  .y = c("all_causes", "diabetes_mellitus", "ischemic_heart_disease", "cerebrovascular_diseases", "influenza_and_pneumonia", "suicide", "combined"),
+  .f = ~ list.files("raw/county_part1") %>% 
+    grep(.x, ., value = TRUE) %>% 
+    paste0("raw/county_part1/", .) %>% 
+    read_tsv() %>% 
+    filter(!is.na(County)) %>% 
+    mutate(Type = .y) %>% 
+    mutate(Deaths = as.numeric(Deaths)) %>% 
+    mutate(Population = as.numeric(Population)) %>% 
+    mutate(`Crude Rate` = as.character(`Crude Rate`))
+)  %>% 
+  print() -> age3564_raw_part1
+
+age3564_raw_part1 %>% count(Type)
+
+map2_dfr(
+  .x = c("Age3564 GR113-000", "Age3564 GR113-046", "Age3564 GR113-058", "Age3564 GR113-070", "Age3564 GR113-076", "Age3564 GR113-124", "Age3564 Mortality"),
+  .y = c("all_causes", "diabetes_mellitus", "ischemic_heart_disease", "cerebrovascular_diseases", "influenza_and_pneumonia", "suicide", "combined"),
+  .f = ~ list.files("raw/county_part2") %>% 
+    grep(.x, ., value = TRUE) %>% 
+    paste0("raw/county_part2/", .) %>% 
+    read_tsv() %>% 
+    filter(!is.na(County)) %>% 
+    mutate(Type = .y) %>% 
+    mutate(Deaths = as.numeric(Deaths)) %>% 
+    mutate(Population = as.numeric(Population)) %>% 
+    mutate(`Crude Rate` = as.character(`Crude Rate`))
+)  %>% 
+  print() -> age3564_raw_part2
+
+age3564_raw_part2 %>% count(Type)
+
+age3564_raw_part1 %>% 
+  bind_rows(age3564_raw_part2) %>% 
+  select(county = County,
+         county_code = `County Code`, 
+         year = Year,
+         type = Type,
+         deaths = Deaths,
+         pop = Population) %>% 
+  separate(county, c("county", "usps"), ", ") %>% 
+  arrange(county_code, year, type) %>% 
+  print(n = 13) -> age3564_deaths_pop
+
+haven::write_dta(age3564_deaths_pop, "dta/05-deaths-pop-county-age3564.dta")
+
 # Load 2013 Urban-Rural level outcome variables ---------------------------
 
 map2_dfr(

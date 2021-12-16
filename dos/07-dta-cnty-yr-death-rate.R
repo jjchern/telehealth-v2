@@ -39,6 +39,19 @@ haven::read_dta("dta/05-deaths-pop-county-under-65.dta") %>%
 
 haven::write_dta(cnty_yr_death_rate_under_65, "dta/07_cnty_yr_death_rate_under_65.dta")
 
+# Prepare age3564 county year mortality rates ----------------------------
+
+haven::read_dta("dta/05-deaths-pop-county-age3564.dta") %>% 
+  mutate(death_rate = deaths / pop * 100000) %>% # filter(county_code == "19103")
+  select(usps, county_code, year, type, death_rate) %>% 
+  mutate(type = paste0("dr_", type, "_3564")) %>% 
+  spread(type, death_rate) %>% 
+  arrange(county_code, year) %>% # group_by(county_code) # 3147
+  # rename(dr_non_trans_acc = `dr_non-trans_acc`) %>% 
+  print() -> cnty_yr_death_rate_age3564
+
+haven::write_dta(cnty_yr_death_rate_age3564, "dta/07_cnty_yr_death_rate_age3564.dta")
+
 # Prepare state year mortality rates --------------------------------------
 
 haven::read_dta("dta/05-deaths-pop-state.dta") %>% 
