@@ -89,6 +89,8 @@ haven::read_dta("dta/06-cnty-yr-pop.dta") %>%
   # Compare with population numbers from WONDER: In the future
   left_join(haven::read_dta("dta/01_st_yr_treatment.dta")) %>% 
   left_join(haven::read_dta("dta/02_ever_any_parity_law.dta"), by = "usps") %>% 
+  # Added state-level covariates
+  left_join(read_dta("dta/08_state_covariates.dta")) %>% 
   # Without dropping any areas with missing values
   # left_join(haven::read_dta("dta/07_ur13_yr_death_rate.dta")) %>% 
   # Drop areas with any missing values

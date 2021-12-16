@@ -2,7 +2,7 @@
 * 11-dta-reg-data-ur13.do
 
 * Change project root:
-glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
+glo projroot "/Users/ioi/Documents/telehealth-v2"
 
 clear
 set more off

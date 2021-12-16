@@ -2,7 +2,7 @@
 * app-tab-05-balanced.do
 
 * Change project root:
-glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
+glo projroot "/Users/ioi/Documents/telehealth-v2"
 
 clear
 set more off
@@ -12,7 +12,8 @@ cd "${projroot}"
 u "dta/10_reg_data_county.dta", clear
 
 local ctrls tot_active_md_p100k_appx cty_unem_rate median_hh_inc pov_rates /// 
-    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx
+    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx ///
+	himcaid himcare
 
 * Panel A
 
@@ -65,7 +66,8 @@ esttab using "out/app-tab-05-balanced.rtf", append b(3) se(3) keep(treat_post) l
 u "dta/12_reg_data_state.dta", clear
 
 local ctrls tot_active_md_p100k_appx cty_unem_rate median_hh_inc pov_rates /// 
-    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx
+    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx ///
+	himcaid himcare
 
 * Panel C
 

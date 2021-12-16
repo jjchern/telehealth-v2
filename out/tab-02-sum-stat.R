@@ -38,7 +38,8 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
          cty_unem_rate, median_hh_inc, pov_rates,
          median_age_appx, pct_black_appx, pct_white_appx,
          pct_female_appx, pct_ba_degree_appx, pct_hs_or_less_appx,
-         tot_active_md_p100k_appx, pop_density_2010) %>% 
+         tot_active_md_p100k_appx, pop_density_2010,
+         himcaid, himcare) %>% 
   gather(type, death_rate, -county_code, -year, -pop) %>% 
   # Drop county-year with missing pop, so that weighted.mean() can be used
   filter(!is.na(pop)) %>% 
@@ -63,11 +64,13 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
     type == "pct_ba_degree_appx"          ~ "14 - Percent BA Degree",
     type == "pct_hs_or_less_appx"         ~ "15 - Percent HS or Below",
     type == "tot_active_md_p100k_appx"    ~ "16 - Total Active MDs (per 100,000)",
-    type == "pop_density_2010"            ~ "17 - Population Density (per sq. mile) in 2010"
+    type == "pop_density_2010"            ~ "17 - Population Density (per sq. mile) in 2010",
+    type == "himcaid"                     ~ "18 - Percent Medicaid",
+    type == "himcare"                     ~ "19 - Percent Medicare"
   )) %>% 
   arrange(type) %>% 
   separate(type, c("row_order", "type"), sep = " - ") %>% 
-  print(n = 21) -> top
+  print(n = 23) -> top
 
 haven::read_dta("dta/09_analysis_data_county.dta") %>% 
   right_join(never_treated_st) %>%
@@ -98,7 +101,8 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
          cty_unem_rate, median_hh_inc, pov_rates,
          median_age_appx, pct_black_appx, pct_white_appx,
          pct_female_appx, pct_ba_degree_appx, pct_hs_or_less_appx,
-         tot_active_md_p100k_appx) %>% 
+         tot_active_md_p100k_appx,
+         himcaid, himcare) %>% 
   gather(type, death_rate, -county_code, -year, -pop) %>% 
   # Drop county-year with missing pop, so that weighted.mean() can be used
   filter(!is.na(pop)) %>% 
@@ -122,7 +126,9 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
     type == "pct_female_appx"             ~ "13 - Percent Female",
     type == "pct_ba_degree_appx"          ~ "14 - Percent BA Degree",
     type == "pct_hs_or_less_appx"         ~ "15 - Percent HS or Below",
-    type == "tot_active_md_p100k_appx"    ~ "16 - Total Active MDs (per 100,000)")) %>% 
+    type == "tot_active_md_p100k_appx"    ~ "16 - Total Active MDs (per 100,000)",
+    type == "himcaid"                     ~ "18 - Percent Medicaid",
+    type == "himcare"                     ~ "19 - Percent Medicare")) %>% 
   arrange(type) %>% 
   separate(type, c("row_order", "type"), sep = " - ") %>%   
   filter(!is.na(type)) %>% 
@@ -137,7 +143,8 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
          cty_unem_rate, median_hh_inc, pov_rates,
          median_age_appx, pct_black_appx, pct_white_appx,
          pct_female_appx, pct_ba_degree_appx, pct_hs_or_less_appx,
-         tot_active_md_p100k_appx) %>% 
+         tot_active_md_p100k_appx,
+         himcaid, himcare) %>% 
   gather(type, death_rate, -county_code, -year, -pop) %>% 
   # Drop county-year with missing pop, so that weighted.mean() can be used
   filter(!is.na(pop)) %>% 
@@ -161,7 +168,9 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
     type == "pct_female_appx"             ~ "13 - Percent Female",
     type == "pct_ba_degree_appx"          ~ "14 - Percent BA Degree",
     type == "pct_hs_or_less_appx"         ~ "15 - Percent HS or Below",
-    type == "tot_active_md_p100k_appx"    ~ "16 - Total Active MDs (per 100,000)")) %>% 
+    type == "tot_active_md_p100k_appx"    ~ "16 - Total Active MDs (per 100,000)",
+    type == "himcaid"                     ~ "18 - Percent Medicaid",
+    type == "himcare"                     ~ "19 - Percent Medicare")) %>% 
   arrange(type) %>% 
   separate(type, c("row_order", "type"), sep = " - ") %>%   
   filter(!is.na(type)) %>% 
@@ -178,7 +187,8 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
          cty_unem_rate, median_hh_inc, pov_rates,
          median_age_appx, pct_black_appx, pct_white_appx,
          pct_female_appx, pct_ba_degree_appx, pct_hs_or_less_appx,
-         tot_active_md_p100k_appx, pop_density_2010) %>% 
+         tot_active_md_p100k_appx, pop_density_2010,
+         himcaid, himcare) %>% 
   gather(type, death_rate, -county_code, -year, -pop) %>% 
   # Drop county-year with missing pop, so that weighted.mean() can be used
   filter(!is.na(pop)) %>% 
@@ -204,11 +214,13 @@ haven::read_dta("dta/09_analysis_data_county.dta") %>%
     type == "pct_ba_degree_appx"          ~ "14 - Percent BA Degree",
     type == "pct_hs_or_less_appx"         ~ "15 - Percent HS or Below",
     type == "tot_active_md_p100k_appx"    ~ "16 - Total Active MDs (per 100,000)",
-    type == "pop_density_2010"            ~ "17 - Population Density (per sq. mile) in 2010"
+    type == "pop_density_2010"            ~ "17 - Population Density (per sq. mile) in 2010",
+    type == "himcaid"                     ~ "18 - Percent Medicaid",
+    type == "himcare"                     ~ "19 - Percent Medicare"
   )) %>% 
   arrange(type) %>% 
   separate(type, c("row_order", "type"), sep = " - ") %>% 
-  print(n = 17) -> top
+  print(n = 19) -> top
 
 haven::read_dta("dta/09_analysis_data_county.dta") %>% 
   right_join(selected_treated_st %>% select(usps)) %>%
@@ -243,7 +255,7 @@ col1 %>%
   add_row(type = "County Statistics: ",
           value = " ", pre = " ", post = " ", value2 = " ",
           .before = 8) %>% 
-  print() -> df
+  print(n = 25) -> df
 
 haven::write_dta(df, "out/tab-02-sum-stat.dta")
 

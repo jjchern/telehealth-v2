@@ -12,9 +12,10 @@ cd "${projroot}"
 u "dta/10_reg_data_county.dta", clear
 
 local ctrls tot_active_md_p100k_appx cty_unem_rate median_hh_inc pov_rates /// 
-    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx
+    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx ///
+	himcaid himcare
 	
-local more_ctrls aca_mdcd_exp c.hmbindex_06#i.year c.hmpindex_06#i.year himcaid himcare
+local more_ctrls aca_mdcd_exp c.hmbindex_06#i.year c.hmpindex_06#i.year
 
 * Panel A
 

@@ -2,7 +2,7 @@
 * app-tab-03-es-w-nt.do
 
 * Change project root:
-glo projroot "/Users/muriel/Documents/GitHub/telehealth-v2"
+glo projroot "/Users/ioi/Documents/telehealth-v2"
 
 clear
 set more off
@@ -12,7 +12,8 @@ cd "${projroot}"
 u "dta/10_reg_data_county.dta", clear
 
 local ctrls tot_active_md_p100k_appx cty_unem_rate median_hh_inc pov_rates /// 
-    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx
+    median_age_appx pct_black_appx pct_white_appx pct_female_appx pct_ba_degree_appx pct_hs_or_less_appx ///
+	himcaid himcare
 	   
 * Panel B
 
@@ -34,5 +35,3 @@ esttab, b(3) se(3) keep(s3_es_year_l* s3_es_year_f*) label star(** 0.05) varwidt
 	   s(pv bl_mean bl_mean_lvl n_units N, fmt(2 2 2 0 %9.0fc) l("{\i p}-values (Pre-Trend)" "Mean of DV (Period 0)" "Mean of DV (Period 0) in Level" "Number of States" "Number of Observations")) ti("1. WLS, s3")
 esttab using "out/app-tab-03-es-w-nt.rtf", replace b(3) se(3) keep(s3_es_year_l* s3_es_year_f*) label star(** 0.05) varwidth(32) ///
 	   s(pv bl_mean bl_mean_lvl n_units N, fmt(2 2 2 0 %9.0fc) l("{\i p}-values (Pre-Trend)" "Mean of DV (Period 0)" "Mean of DV (Period 0) in Level" "Number of States" "Number of Observations")) ti("1. WLS, s3")
-
-	   
